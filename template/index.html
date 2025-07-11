@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rashank AI</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
+      padding: 40px;
+      text-align: center;
+      color: #333;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+    }
+
+    textarea {
+      width: 80%;
+      max-width: 700px;
+      height: 100px;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      resize: vertical;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 12px 25px;
+      font-size: 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #response {
+      margin-top: 30px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: left;
+      white-space: pre-wrap;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <h1>Ask Rashank AI Anything</h1>
+  <textarea id="question" placeholder="Type your question here..."></textarea><br />
+  <button onclick="askAI()">Ask</button>
+  <div id="response"></div>
+
+  <script>
+    async function askAI() {
+      const question = document.getElementById("question").value;
+      const resDiv = document.getElementById("response");
+      resDiv.innerHTML = "Thinking...";
+
+      const response = await fetch("/ask", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ question })
+      });
+
+      const data = await response.json();
+      resDiv.innerHTML = data.answer || "Sorry, I couldn't find an answer.";
+    }
+  </script>
+</body>
+</html>
